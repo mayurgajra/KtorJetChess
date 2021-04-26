@@ -2,6 +2,7 @@ package com.mayurg
 
 import com.mayurg.data.collections.User
 import com.mayurg.data.registerUser
+import com.mayurg.routes.registerRoute
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
@@ -19,19 +20,15 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module(testing: Boolean = false) {
     install(DefaultHeaders)
     install(CallLogging)
-    install(Routing)
+    install(Routing){
+        registerRoute()
+    }
     install(ContentNegotiation) {
         gson {
             setPrettyPrinting()
         }
     }
-    CoroutineScope(Dispatchers.IO).launch {
-        registerUser(
-            User(
-                "abc@abc.com", "1234"
-            )
-        )
-    }
+
 
 }
 
