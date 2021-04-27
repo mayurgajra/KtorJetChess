@@ -2,6 +2,7 @@ package com.mayurg
 
 import com.mayurg.data.collections.User
 import com.mayurg.data.registerUser
+import com.mayurg.routes.loginRoute
 import com.mayurg.routes.registerRoute
 import io.ktor.application.*
 import io.ktor.features.*
@@ -22,6 +23,7 @@ fun Application.module(testing: Boolean = false) {
     install(CallLogging)
     install(Routing){
         registerRoute()
+        loginRoute()
     }
     install(ContentNegotiation) {
         gson {
