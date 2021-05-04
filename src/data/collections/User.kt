@@ -4,8 +4,10 @@ import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 
 data class User(
-    val email:String,
-    val password:String,
+    val fullName: String? = null,
+    val mobile: String? = null,
+    val email: String,
+    val password: String,
     @BsonId
     val id: String  = ObjectId().toString()
 )

@@ -1,7 +1,7 @@
 package com.mayurg.routes
 
 import com.mayurg.data.checkPasswordForEmail
-import com.mayurg.data.requests.AccountRequest
+import com.mayurg.data.requests.LoginUserRequest
 import com.mayurg.data.responses.SimpleResponse
 import io.ktor.application.*
 import io.ktor.features.ContentTransformationException
@@ -15,7 +15,7 @@ fun Route.loginRoute(){
     route("/login"){
         post {
             val request = try {
-                call.receive<AccountRequest>()
+                call.receive<LoginUserRequest>()
             } catch (e: ContentTransformationException) {
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
