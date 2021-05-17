@@ -5,6 +5,7 @@ import com.mayurg.data.collections.User
 import com.mayurg.data.registerUser
 import com.mayurg.data.requests.RegisterUserRequest
 import com.mayurg.data.responses.SimpleResponse
+import com.mayurg.security.getHashWithSalt
 import io.ktor.application.*
 import io.ktor.features.ContentTransformationException
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
@@ -29,7 +30,7 @@ fun Route.registerRoute() {
                     fullName = request.fullName,
                     mobile = request.mobile,
                     email = request.email,
-                    password = request.password
+                    password = getHashWithSalt(request.password)
                 )
                 if (registerUser(user)) {
                     call.respond(OK, SimpleResponse(true, "Successfully created account!"))
