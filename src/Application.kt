@@ -1,10 +1,7 @@
 package com.mayurg
 
 import com.mayurg.data.checkPasswordForEmail
-import com.mayurg.routes.getUsersRoute
-import com.mayurg.routes.loginRoute
-import com.mayurg.routes.registerRoute
-import com.mayurg.routes.sendChallenge
+import com.mayurg.routes.*
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.features.*
@@ -23,6 +20,7 @@ fun Application.module(testing: Boolean = false) {
         loginRoute()
         getUsersRoute()
         sendChallenge()
+        getChallengesRoute()
     }
     install(ContentNegotiation) {
         gson {

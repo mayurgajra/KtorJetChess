@@ -2,6 +2,7 @@ package com.mayurg.data
 
 import com.mayurg.data.collections.Challenge
 import com.mayurg.data.collections.User
+import com.mayurg.data.responses.FEChallenge
 import com.mayurg.data.responses.FEUser
 import com.mayurg.security.checkHashForPassword
 import org.litote.kmongo.coroutine.coroutine
@@ -33,6 +34,18 @@ suspend fun getUsers(): List<FEUser> {
             mobile = it.mobile,
             email = it.email,
             id = it.id,
+        )
+    }
+}
+
+suspend fun getChallenges(userId: String): List<FEChallenge> {
+    return challenges.find(Challenge::toId eq userId).toList().map {
+        val userName = users.findOne(User::id eq it.fromId)?.fullName.orEmpty()
+        FEChallenge(
+            id = it.id,
+            fromId = it.fromId,
+            toId = it.toId,
+            fromUsername = userName
         )
     }
 }
