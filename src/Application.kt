@@ -21,6 +21,7 @@ fun Application.module(testing: Boolean = false) {
         getUsersRoute()
         sendChallenge()
         getChallengesRoute()
+        acceptRejectChallenge()
     }
     install(ContentNegotiation) {
         gson {

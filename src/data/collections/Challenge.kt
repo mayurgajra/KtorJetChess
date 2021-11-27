@@ -8,4 +8,5 @@ data class Challenge(
     val id: String = ObjectId().toString(),
     val fromId: String,
     val toId: String,
+    val status: String = "none"
 )
