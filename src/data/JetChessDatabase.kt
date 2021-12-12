@@ -25,6 +25,17 @@ suspend fun checkIfUserExists(email: String): Boolean {
     return users.findOne(User::email eq email) != null
 }
 
+suspend fun getUserByEmail(email: String): FEUser? {
+    return users.findOne(User::email eq email)?.let {
+        FEUser(
+            fullName = it.fullName,
+            mobile = it.mobile,
+            email = it.email,
+            id = it.id,
+        )
+    }
+}
+
 suspend fun checkPasswordForEmail(email: String, passwordToCheck: String): Boolean {
     val actualPassword = users.findOne(User::email eq email)?.password ?: return false
     return checkHashForPassword(passwordToCheck, actualPassword)

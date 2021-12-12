@@ -16,5 +16,6 @@ fun checkHashForPassword(password: String, hashWithSalt: String): Boolean {
     val salt = hashAndSalt[0]
     val hash = hashAndSalt[1]
     val passwordHash = DigestUtils.sha256Hex("$salt$password")
+    println("Hash:$hash & passwordHash:$passwordHash")
     return hash == passwordHash
 }
