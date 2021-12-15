@@ -37,6 +37,7 @@ fun Application.module(testing: Boolean = false) {
         sendChallenge()
         getChallengesRoute()
         acceptRejectChallenge()
+        createGameRoomRoute()
     }
 }
 

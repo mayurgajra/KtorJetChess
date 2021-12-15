@@ -64,8 +64,12 @@ suspend fun getChallenges(userId: String): List<FEChallenge> {
     }
 }
 
-suspend fun sendChallenge(challenge: Challenge): Boolean {
-    return challenges.insertOne(challenge).wasAcknowledged()
+suspend fun sendChallenge(challenge: Challenge): String? {
+    val isInsertSuccess = challenges.insertOne(challenge).wasAcknowledged()
+    if (isInsertSuccess) {
+        return challenge.id
+    }
+    return null
 }
 
 suspend fun setChallengeStatus(request: AcceptRejectChallengeRequest): Boolean {
