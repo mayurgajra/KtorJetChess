@@ -11,7 +11,15 @@ fun Route.getUsersRoute() {
     route("/getUsers") {
         get {
             try {
-                val users = getUsers()
+
+                val loggedInUserId = call.request.queryParameters["loggedInUserId"]
+
+                if (loggedInUserId == null) {
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@get
+                }
+
+                val users = getUsers(loggedInUserId)
                 call.respond(HttpStatusCode.OK, users)
             } catch (e: Exception) {
                 e.printStackTrace()

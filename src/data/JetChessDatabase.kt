@@ -8,6 +8,7 @@ import com.mayurg.data.responses.FEUser
 import com.mayurg.security.checkHashForPassword
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
+import org.litote.kmongo.ne
 import org.litote.kmongo.reactivestreams.KMongo
 import org.litote.kmongo.set
 import org.litote.kmongo.setTo
@@ -41,8 +42,8 @@ suspend fun checkPasswordForEmail(email: String, passwordToCheck: String): Boole
     return checkHashForPassword(passwordToCheck, actualPassword)
 }
 
-suspend fun getUsers(): List<FEUser> {
-    return users.find().toList().map {
+suspend fun getUsers(loggedInUserId: String): List<FEUser> {
+    return users.find(User::id ne loggedInUserId).toList().map {
         FEUser(
             fullName = it.fullName,
             mobile = it.mobile,
