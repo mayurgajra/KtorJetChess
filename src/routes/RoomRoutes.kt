@@ -37,19 +37,18 @@ fun Route.createGameRoomRoute() {
 fun Route.joinRoomRoute() {
     route("/joinGameRoom") {
         get {
-            val username = call.parameters["userId"]
-            val roomName = call.parameters["roomId"]
-            if (username == null || roomName == null) {
+            val userId = call.parameters["userId"]
+            val roomId = call.parameters["roomId"]
+            if (userId == null || roomId == null) {
                 call.respond(BadRequest)
                 return@get
             }
-            val room = server.rooms[roomName]
-            when {
-                room == null -> {
+            when (server.rooms[roomId]) {
+                null -> {
                     call.respond(OK, SimpleResponse(false, "Room not found"))
                 }
                 else -> {
-                    call.respond(OK,SimpleResponse(true,"Room joined"))
+                    call.respond(OK, SimpleResponse(true, "Room joined"))
                 }
             }
         }
