@@ -6,12 +6,9 @@ import com.mayurg.data.requests.AcceptRejectChallengeRequest
 import com.mayurg.data.responses.FEChallenge
 import com.mayurg.data.responses.FEUser
 import com.mayurg.security.checkHashForPassword
+import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.coroutine
-import org.litote.kmongo.eq
-import org.litote.kmongo.ne
 import org.litote.kmongo.reactivestreams.KMongo
-import org.litote.kmongo.set
-import org.litote.kmongo.setTo
 
 private val client = KMongo.createClient().coroutine
 private val database = client.getDatabase("JetChessDatabase")
@@ -54,7 +51,7 @@ suspend fun getUsers(loggedInUserId: String): List<FEUser> {
 }
 
 suspend fun getChallenges(userId: String): List<FEChallenge> {
-    return challenges.find(Challenge::toId eq userId).toList().map {
+    return challenges.find(and(Challenge::toId eq userId, Challenge::status eq "none")).toList().map {
         val userName = users.findOne(User::id eq it.fromId)?.fullName.orEmpty()
         FEChallenge(
             id = it.id,
