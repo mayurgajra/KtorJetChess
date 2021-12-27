@@ -1,7 +1,7 @@
 package com.mayurg.data.models
 
-import com.mayurg.data.others.Constants.PING_FREQUENCY
 import com.mayurg.gson
+import com.mayurg.other.Constants.PING_FREQUENCY
 import com.mayurg.server
 import io.ktor.http.cio.websocket.*
 import kotlinx.coroutines.GlobalScope
@@ -10,12 +10,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 data class Player(
-    val username: String,
+    val playerName: String,
     var socket: WebSocketSession,
-    val clientId: String,
-    var isDrawing: Boolean = false,
-    var score: Int = 0,
-    var rank: Int = 0
+    val playerId: String,
+    var isMakingMove: Boolean = false,
 ) {
     private var pingJob: Job? = null
 
@@ -40,7 +38,7 @@ data class Player(
         delay(PING_FREQUENCY)
         if (pingTime - pongTime > PING_FREQUENCY){
             isOnline = false
-            server.playerLeft(clientId)
+            server.playerLeft(playerId)
             pingJob?.cancel()
         }
     }

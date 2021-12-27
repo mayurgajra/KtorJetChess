@@ -17,7 +17,7 @@ import kotlinx.coroutines.channels.consumeEach
 
 fun Route.gameWebSocketRoute() {
     route("/ws/playGame") {
-        standardWebSocket { socket, clientId, message, payload ->
+        standardWebSocket { socket, playerId, message, payload ->
             when (payload) {
                 is JoinRoomHandshake -> {
                     val room = server.rooms[payload.roomId]
@@ -30,24 +30,24 @@ fun Route.gameWebSocketRoute() {
                     val player = Player(
                         payload.username,
                         socket,
-                        payload.clientId
+                        payload.playerId
                     )
                     server.playerJoined(player)
-                    if (!room.containsPlayer(player.clientId)) {
-                        room.addPlayer(player.clientId, player.username, socket)
+                    if (!room.containsPlayer(player.playerId)) {
+                        room.addPlayer(player.playerId, player.playerName, socket)
                     } else {
-                        val playerInRoom = room.players.find { it.clientId == clientId }
+                        val playerInRoom = room.players.find { it.playerId == playerId }
                         playerInRoom?.socket = socket
                         playerInRoom?.startPinging()
                     }
                 }
 
                 is Ping -> {
-                    server.players[clientId]?.receivedPong()
+                    server.players[playerId]?.receivedPong()
                 }
 
                 is DisconnectRequest -> {
-                    server.playerLeft(clientId, true)
+                    server.playerLeft(playerId, true)
                 }
             }
         }
@@ -57,7 +57,7 @@ fun Route.gameWebSocketRoute() {
 fun Route.standardWebSocket(
     handleFrame: suspend (
         socket: DefaultWebSocketServerSession,
-        clientId: String,
+        playerId: String,
         message: String,
         payload: BaseModel
     ) -> Unit
@@ -79,18 +79,18 @@ fun Route.standardWebSocket(
                         else -> BaseModel::class.java
                     }
                     val payload = gson.fromJson(message, type)
-                    handleFrame(this, session.clientId, message, payload)
+                    handleFrame(this, session.playerId, message, payload)
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             // Handle disconnects
-            val playerWithClientId = server.getRoomWithClientId(session.clientId)?.players?.find {
-                it.clientId == session.clientId
+            val playerWithPlayerId = server.getRoomWithPlayerId(session.playerId)?.players?.find {
+                it.playerId == session.playerId
             }
-            if (playerWithClientId != null) {
-                server.playerLeft(session.clientId)
+            if (playerWithPlayerId != null) {
+                server.playerLeft(session.playerId)
             }
 
 

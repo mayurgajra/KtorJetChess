@@ -27,8 +27,8 @@ fun Application.module(testing: Boolean = false) {
     }
     intercept(ApplicationCallPipeline.Features) {
         if (call.sessions.get<GameSession>() == null) {
-            val clientId = call.parameters["client_id"] ?: ""
-            call.sessions.set(GameSession(clientId, generateNonce()))
+            val playerId = call.parameters["client_id"] ?: ""
+            call.sessions.set(GameSession(playerId, generateNonce()))
         }
     }
 

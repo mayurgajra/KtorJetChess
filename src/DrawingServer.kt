@@ -10,23 +10,23 @@ class DrawingServer {
     val players = ConcurrentHashMap<String, Player>()
 
     fun playerJoined(player: Player) {
-        players[player.clientId] = player
+        players[player.playerId] = player
         player.startPinging()
     }
 
-    fun playerLeft(clientId: String,immediatelyDisconnect:Boolean = false){
-        val playersRoom = getRoomWithClientId(clientId)
-        if (immediatelyDisconnect || players[clientId]?.isOnline == false){
-//            playersRoom?.removePlayer(clientId)
-            players[clientId]?.disconnect()
-            players.remove(clientId)
+    fun playerLeft(playerId: String,immediatelyDisconnect:Boolean = false){
+        val playersRoom = getRoomWithPlayerId(playerId)
+        if (immediatelyDisconnect || players[playerId]?.isOnline == false){
+            playersRoom?.removePlayer(playerId)
+            players[playerId]?.disconnect()
+            players.remove(playerId)
         }
     }
 
-    fun getRoomWithClientId(clientId: String): Room? {
+    fun getRoomWithPlayerId(playerId: String): Room? {
         val filteredRooms = rooms.filterValues { room ->
             room.players.find { player ->
-                player.clientId == clientId
+                player.playerId == playerId
             } != null
         }
 

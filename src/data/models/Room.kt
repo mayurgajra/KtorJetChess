@@ -6,12 +6,18 @@ class Room(
     val id: String,
     var players: List<Player> = listOf()
 ) {
-    fun containsPlayer(clientId: String): Boolean {
-        return true
+    fun containsPlayer(playerId: String): Boolean {
+        return players.find { it.playerId == playerId } != null
     }
 
-    fun addPlayer(clientId: String, username: String, socket: DefaultWebSocketServerSession) {
+    fun addPlayer(playerId: String, playerName: String, socket: DefaultWebSocketServerSession) {
+        val player = Player(playerName, socket, playerId)
+        players.toMutableList().add(player)
+    }
 
+    fun removePlayer(playerId: String) {
+        val player = players.find { it.playerId == playerId }!!
+        players = players - player
     }
 
 
