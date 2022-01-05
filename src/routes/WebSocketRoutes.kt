@@ -40,7 +40,11 @@ fun Route.gameWebSocketRoute() {
                         playerInRoom?.socket = socket
                         playerInRoom?.startPinging()
                     }
+
+                    println("JoinRoom called")
                 }
+
+
 
                 is Ping -> {
                     server.players[playerId]?.receivedPong()
