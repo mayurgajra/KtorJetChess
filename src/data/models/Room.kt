@@ -14,7 +14,9 @@ class Room(
 
     fun addPlayer(playerId: String, playerName: String, socket: DefaultWebSocketServerSession) {
         val player = Player(playerName, socket, playerId)
-        players.toMutableList().add(player)
+        val tmpPlayers = players.toMutableList()
+        tmpPlayers.add(0, player)
+        players = tmpPlayers
     }
 
     suspend fun broadcastToAllExcept(message: String, playerId: String) {

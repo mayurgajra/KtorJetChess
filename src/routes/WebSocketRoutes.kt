@@ -5,6 +5,7 @@ import com.mayurg.data.models.*
 import com.mayurg.data.requests.DisconnectRequest
 import com.mayurg.gson
 import com.mayurg.other.Constants.TYPE_JOIN_ROOM_HANDSHAKE
+import com.mayurg.other.Constants.TYPE_MOVE
 import com.mayurg.other.Constants.TYPE_PING
 import com.mayurg.server
 import com.mayurg.session.GameSession
@@ -45,6 +46,17 @@ fun Route.gameWebSocketRoute() {
                 }
 
 
+                is GameMove -> {
+                    val room = server.rooms[payload.roomId]
+                    if (room == null) {
+                        val gameError = GameError(GameError.ERROR_ROOM_NOT_FOUND)
+                        socket.send(Frame.Text(gson.toJson(gameError)))
+                        return@standardWebSocket
+                    }
+
+                    room.broadcastToAllExcept(gson.toJson(payload), payload.userId)
+                }
+
 
                 is Ping -> {
                     server.players[playerId]?.receivedPong()
@@ -80,6 +92,7 @@ fun Route.standardWebSocket(
                     val type = when (jsonObject.get("type").asString) {
                         TYPE_PING -> Ping::class.java
                         TYPE_JOIN_ROOM_HANDSHAKE -> JoinRoomHandshake::class.java
+                        TYPE_MOVE -> GameMove::class.java
                         else -> BaseModel::class.java
                     }
                     val payload = gson.fromJson(message, type)
