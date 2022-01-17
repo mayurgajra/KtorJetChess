@@ -28,8 +28,8 @@ class Room(
     }
 
     fun removePlayer(playerId: String) {
-        val player = players.find { it.playerId == playerId }!!
-        players = players - player
+       /* val player = players.find { it.playerId == playerId }!!
+        players = players - player*/
     }
 
 

@@ -54,6 +54,7 @@ fun Route.gameWebSocketRoute() {
                         return@standardWebSocket
                     }
 
+
                     room.broadcastToAllExcept(gson.toJson(payload), payload.userId)
                 }
 

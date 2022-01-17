@@ -15,12 +15,12 @@ class DrawingServer {
     }
 
     fun playerLeft(playerId: String,immediatelyDisconnect:Boolean = false){
-        val playersRoom = getRoomWithPlayerId(playerId)
+        /*val playersRoom = getRoomWithPlayerId(playerId)
         if (immediatelyDisconnect || players[playerId]?.isOnline == false){
             playersRoom?.removePlayer(playerId)
             players[playerId]?.disconnect()
             players.remove(playerId)
-        }
+        }*/
     }
 
     fun getRoomWithPlayerId(playerId: String): Room? {
