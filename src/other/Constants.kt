@@ -7,6 +7,7 @@ object Constants {
     const val TYPE_GAME_ERROR = "TYPE_GAME_ERROR"
     const val TYPE_DISCONNECT_REQUEST = "TYPE_DISCONNECT_REQUEST"
     const val TYPE_MOVE = "TYPE_MOVE"
+    const val TYPE_PLAYER_FE = "TYPE_PLAYER_FE"
 
     const val PING_FREQUENCY = 3000L
 }

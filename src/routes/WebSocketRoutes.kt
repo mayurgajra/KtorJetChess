@@ -42,7 +42,13 @@ fun Route.gameWebSocketRoute() {
                         playerInRoom?.startPinging()
                     }
 
-                    println("JoinRoom called")
+                    room.players.forEach {
+                        val playerFE = PlayerFE(
+                            it.playerName,
+                            it.playerId
+                        )
+                        room.broadcastToAll(gson.toJson(playerFE))
+                    }
                 }
 
 

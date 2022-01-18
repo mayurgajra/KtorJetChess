@@ -27,6 +27,14 @@ class Room(
         }
     }
 
+    suspend fun broadcastToAll(message: String) {
+        players.forEach { player ->
+            if (player.socket.isActive) {
+                player.socket.send(Frame.Text(message))
+            }
+        }
+    }
+
     fun removePlayer(playerId: String) {
        /* val player = players.find { it.playerId == playerId }!!
         players = players - player*/
